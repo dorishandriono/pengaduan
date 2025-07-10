@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Pengaduan Masyarakat (DUMAS)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #a8c0ff, #3f2b96); /* Soft gradient background */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem; /* Responsive padding */
+        }
+        /* Custom scrollbar for textareas */
+        textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Loader animation */
+        .loader {
+            border-top-color: #3498db;
+            -webkit-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
+        }
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="form-container" class="bg-white p-8 md:p-12 rounded-xl shadow-2xl w-full max-w-2xl border border-gray-100 transform transition-all duration-300 ease-in-out">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-center text-gray-800 mb-8 pb-4 border-b-2 border-blue-100">Formulir Pengaduan Masyarakat</h1>
+
+        <form id="dumasForm" class="space-y-7">
+            <!-- Nama Lengkap Pelapor -->
+            <div>
+                <label for="nama" class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap Pelapor <span class="text-red-500">*</span></label>
+                <input type="text" id="nama" name="nama" required
+                       class="w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base transition duration-150 ease-in-out hover:border-blue-400">
+            </div>
+
+            <!-- Nomor HP/WA -->
+            <div>
+                <label for="hp" class="block text-sm font-semibold text-gray-700 mb-2">Nomor HP/WA <span class="text-red-500">*</span></label>
+                <input type="tel" id="hp" name="hp" required pattern="[0-9]{9,15}"
+                       title="Masukkan nomor telepon yang valid (9-15 digit)"
+                       class="w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base transition duration-150 ease-in-out hover:border-blue-400">
+            </div>
+
+            <!-- Alamat Pelapor -->
+            <div>
+                <label for="alamat" class="block text-sm font-semibold text-gray-700 mb-2">Alamat Pelapor <span class="text-red-500">*</span></label>
+                <textarea id="alamat" name="alamat" rows="3" required
+                          class="w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base resize-y transition duration-150 ease-in-out hover:border-blue-400"></textarea>
+            </div>
+
+            <!-- Jenis Pengaduan -->
+            <div>
+                <label for="jenisPengaduan" class="block text-sm font-semibold text-gray-700 mb-2">Jenis Pengaduan <span class="text-red-500">*</span></label>
+                <div class="relative">
+                    <select id="jenisPengaduan" name="jenisPengaduan" required
+                            class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-3 px-5 pr-8 rounded-lg shadow-sm leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out hover:border-blue-400">
+                        <option value="">-- Pilih Jenis Pengaduan --</option>
+                        <option value="Pelayanan Publik">Pelayanan Publik</option>
+                        <option value="Fasilitas Umum">Fasilitas Umum</option>
+                        <option value="Sumber Daya Manusia (SDM)">Sumber Daya Manusia (SDM)</option>
+                        <option value="Lingkungan">Lingkungan</option>
+                        <option value="Infrastruktur">Infrastruktur</option>
+                        <option value="Lain-lain">Lain-lain</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Uraian Singkat Pengaduan -->
+            <div>
+                <label for="uraian" class="block text-sm font-semibold text-gray-700 mb-2">Uraian Singkat Pengaduan <span class="text-red-500">*</span></label>
+                <textarea id="uraian" name="uraian" rows="5" required
+                          class="w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base resize-y transition duration-150 ease-in-out hover:border-blue-400"></textarea>
+            </div>
+
+            <!-- Lampiran Bukti (Opsional) -->
+            <div>
+                <label for="lampiran" class="block text-sm font-semibold text-gray-700 mb-2">Lampiran Bukti (Foto/Screenshot, Opsional)</label>
+                <input type="file" id="lampiran" name="lampiran" accept="image/*"
+                       class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 transition duration-150 ease-in-out">
+                <p class="mt-2 text-xs text-gray-500">Ukuran file maksimal 2MB. Hanya gambar (JPG, PNG).</p>
+                <div id="preview-container" class="mt-4 hidden">
+                    <img id="image-preview" class="max-w-full h-auto rounded-lg shadow-md border border-gray-200" src="#" alt="Pratinjau Lampiran">
+                </div>
+            </div>
+
+            <!-- Tanggal Pengaduan (Auto Generate) -->
+            <div>
+                <label for="tanggal" class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Pengaduan</label>
+                <input type="text" id="tanggal" name="tanggal" readonly
+                       class="w-full px-5 py-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed text-base">
+            </div>
+
+            <!-- Tombol Submit -->
+            <div>
+                <button type="submit" id="submitBtn"
+                        class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-bold text-white bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transform hover:scale-105 transition duration-300 ease-in-out">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                    Kirim Pengaduan
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50 hidden">
+        <div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-xl">
+            <div class="loader ease-linear rounded-full border-4 border-t-4 border-blue-500 h-12 w-12 mb-4"></div>
+            <p class="text-gray-800 text-lg font-medium">Mengirim pengaduan...</p>
+        </div>
+    </div>
+
+    <!-- Confirmation Message Container -->
+    <div id="confirmation-container" class="hidden bg-white p-8 md:p-12 rounded-xl shadow-2xl w-full max-w-2xl text-center border border-gray-100 transform transition-all duration-300 ease-in-out">
+        <h2 class="text-4xl font-extrabold text-green-600 mb-6 flex items-center justify-center">
+            <svg class="w-10 h-10 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Terima Kasih!
+        </h2>
+        <p class="text-gray-700 text-lg mb-8 leading-relaxed">Pengaduan Anda telah diterima dan akan segera ditindaklanjuti oleh tim kami. Kami menghargai laporan Anda.</p>
+        <p class="text-gray-600 text-sm mb-8">Anda akan menerima pemberitahuan lebih lanjut melalui kontak yang Anda berikan.</p>
+        <button id="newComplaintBtn" class="py-3 px-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transform hover:scale-105 transition duration-300 ease-in-out font-semibold">
+            Buat Pengaduan Baru
+        </button>
+    </div>
+
+    <script>
+        // URL Google Apps Script yang sudah Anda deploy (GANTI DENGAN URL ASLI ANDA)
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxrSj5xqTSJRxR15K9r3Xk_ycGvOMfl8nh1F7rjJznpS6FD9yXih1OT96i0Qzb_SH_F/exec'; // GANTI INI!
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const dumasForm = document.getElementById('dumasForm');
+            const tanggalInput = document.getElementById('tanggal');
+            const lampiranInput = document.getElementById('lampiran');
+            const imagePreview = document.getElementById('image-preview');
+            const previewContainer = document.getElementById('preview-container');
+            const formContainer = document.getElementById('form-container');
+            const confirmationContainer = document.getElementById('confirmation-container');
+            const newComplaintBtn = document.getElementById('newComplaintBtn');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Auto-generate current date
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0'); // Months start at 0!
+            const day = String(today.getDate()).padStart(2, '0');
+            tanggalInput.value = `${day}-${month}-${year}`;
+
+            // Image preview functionality
+            lampiranInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    // Check file size (max 2MB)
+                    if (file.size > 2 * 1024 * 1024) {
+                        // Using a custom alert-like message instead of browser's alert()
+                        const message = 'Ukuran file terlalu besar. Maksimal 2MB.';
+                        const alertDiv = document.createElement('div');
+                        alertDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-transform transform translate-x-full ease-out duration-300';
+                        alertDiv.textContent = message;
+                        document.body.appendChild(alertDiv);
+
+                        setTimeout(() => {
+                            alertDiv.classList.remove('translate-x-full');
+                            alertDiv.classList.add('translate-x-0');
+                        }, 100); // Small delay to ensure transition works
+
+                        setTimeout(() => {
+                            alertDiv.classList.remove('translate-x-0');
+                            alertDiv.classList.add('translate-x-full');
+                            alertDiv.addEventListener('transitionend', () => alertDiv.remove());
+                        }, 3000); // Hide after 3 seconds
+
+                        this.value = ''; // Clear the input
+                        previewContainer.classList.add('hidden');
+                        imagePreview.src = '#';
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        previewContainer.classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    previewContainer.classList.add('hidden');
+                    imagePreview.src = '#';
+                }
+            });
+
+            // Handle form submission
+            dumasForm.addEventListener('submit', async (e) => {
+                e.preventDefault(); // Prevent default form submission
+
+                submitBtn.disabled = true; // Disable button to prevent multiple submissions
+                loadingOverlay.classList.remove('hidden'); // Show loading overlay
+
+                const formData = new FormData(dumasForm);
+                const data = {};
+
+                // Convert form data to a plain object
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+
+                // Handle file attachment: convert to base64
+                const file = lampiranInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = async () => {
+                        data.lampiran = reader.result; // Base64 string
+                        await sendDataToGoogleSheets(data);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    data.lampiran = ''; // No attachment
+                    await sendDataToGoogleSheets(data);
+                }
+            });
+
+            // Function to send data to Google Apps Script
+            async function sendDataToGoogleSheets(data) {
+                try {
+                    const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors', // Required for Google Apps Script web app
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    });
+
+                    // Since mode: 'no-cors' is used, we can't check response.ok or response.json()
+                    // We assume success if no error is thrown by fetch itself.
+                    // The actual success/failure feedback would ideally come from the Apps Script
+                    // if it were a full CORS setup, but for simple form submission, no-cors works.
+
+                    console.log('Data sent to Google Apps Script (assuming success with no-cors).');
+                    showConfirmation();
+
+                } catch (error) {
+                    console.error('Error sending data:', error);
+                    // Using a custom alert-like message instead of browser's alert()
+                    const message = 'Terjadi kesalahan saat mengirim pengaduan. Silakan coba lagi.';
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-transform transform translate-x-full ease-out duration-300';
+                    alertDiv.textContent = message;
+                    document.body.appendChild(alertDiv);
+
+                    setTimeout(() => {
+                        alertDiv.classList.remove('translate-x-full');
+                        alertDiv.classList.add('translate-x-0');
+                    }, 100); // Small delay to ensure transition works
+
+                    setTimeout(() => {
+                        alertDiv.classList.remove('translate-x-0');
+                        alertDiv.classList.add('translate-x-full');
+                        alertDiv.addEventListener('transitionend', () => alertDiv.remove());
+                    }, 3000); // Hide after 3 seconds
+
+                } finally {
+                    loadingOverlay.classList.add('hidden'); // Hide loading overlay
+                    submitBtn.disabled = false; // Re-enable button
+                }
+            }
+
+            // Show confirmation message and hide form
+            function showConfirmation() {
+                formContainer.classList.add('hidden');
+                confirmationContainer.classList.remove('hidden');
+            }
+
+            // Reset form and show it again for new complaint
+            newComplaintBtn.addEventListener('click', () => {
+                dumasForm.reset();
+                tanggalInput.value = `${day}-${month}-${year}`; // Reset date
+                previewContainer.classList.add('hidden'); // Hide image preview
+                imagePreview.src = '#'; // Clear image source
+                confirmationContainer.classList.add('hidden');
+                formContainer.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
